@@ -1,7 +1,6 @@
-import { AppBar, Box, Button, CssBaseline, Fab, Grid, OutlinedInput, TextField, ThemeProvider, Toolbar, Typography, createTheme } from '@mui/material'
+import { AppBar, Box, Button, CssBaseline, Fab,  TextField, ThemeProvider, Toolbar, Typography, createTheme } from '@mui/material'
 import React, { useState } from 'react'
 import './styles/login.css'
-import LoginPage from './LoginPage';
 import CloseIcon from '@mui/icons-material/Close';
 
 const NavBar = () => {
