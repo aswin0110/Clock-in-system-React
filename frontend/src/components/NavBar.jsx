@@ -2,6 +2,7 @@ import { AppBar, Box, Button, CssBaseline, Fab,  TextField, ThemeProvider, Toolb
 import React, { useState } from 'react'
 import './styles/login.css'
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
     const [modal,setModal] = useState(false);
@@ -16,7 +17,11 @@ const NavBar = () => {
     const toggleModal = () => {
         setModal(!modal);
       };
-    
+    const loginUser = ()=>{
+        // this.props.history.push('/tracker')
+        setModal(!modal);
+        
+    }
     const darkTheme = createTheme({
         palette: {
             primary : {
@@ -71,9 +76,13 @@ const NavBar = () => {
               }}
                label='Password' placeholder='Password'/>
             <br /><br />
-            <Button variant='text' color='success'>Login</Button>
+            <Button variant='text' onClick={loginUser}  color='success' >
+              <Link to={'/tracker'} style={{textDecoration:'none',color:'green'}}>
+                Login
+              </Link>
+            </Button>
             
-            <Fab color="success" aria-label="add"
+            <Fab color="error" aria-label="add"
             sx={{position: 'absolute',
             top: '-9px',
             right: '-9px',

@@ -17,6 +17,8 @@ body.active-modal {
     right: 0;
     bottom: 0;
     position: fixed;
+    border-radius: 1em;
+    box-shadow: 0 0.188em 1.550em rgb(100, 156, 156);
 }
 
 .overlay {
