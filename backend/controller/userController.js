@@ -37,5 +37,38 @@ const getUsers = async(req,res) =>{
     }
 }
 
+//login
+const userLogin = async(req,res)=>{
+    try{
+        const {email,password} = req.body;
+        // const email = req.body.email;
+        const user = await userModel.find({email});
+        console.log(user.password)
+        if(user){
+            console.log(user);
+            console.log(user[0].password)
+            if( await password==user[0].password){
+                res.status(200).json({ status: 'Login successful',data:user });
+                  
+            }else{
+                return res.status(401).json({status:'Password incorrect'})
+            }
+            
+        }
+        else{
+            return res.status(401).json({status:'User name incorrect'})
+        }
+        // if(!user){
+        //     return res.status(401).json({status:'User name incorrect'})
+        // }
+        // res.status(200).json({ status: 'Login successful',data:user });
+    }
+    catch(error){
+        res.status(500).json({ error: 'User name incorrect' });
+    }
+
+}
+
+
 //exporting
-module.exports = {addUser,getUsers}
+module.exports = {addUser,getUsers,userLogin}
