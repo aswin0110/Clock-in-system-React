@@ -8,6 +8,9 @@ app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
+const userControlRouter = require('./routes/userRouter')
+app.use('/users',userControlRouter)
+
 PORT = 3005
 
 
