@@ -42,12 +42,12 @@ const userLogin = async(req,res)=>{
     try{
         const {email,password} = req.body;
         // const email = req.body.email;
-        const user = await userModel.find({email});
+        const user = await userModel.findOne({email});
         console.log(user.password)
         if(user){
             console.log(user);
-            console.log(user[0].password)
-            if( await password==user[0].password){
+            console.log(user.password)
+            if( await password==user.password){
                 res.status(200).json({ status: 'Login successful',data:user });
                   
             }else{
@@ -55,16 +55,16 @@ const userLogin = async(req,res)=>{
             }
             
         }
-        else{
-            return res.status(401).json({status:'User name incorrect'})
-        }
-        // if(!user){
+        // else{
         //     return res.status(401).json({status:'User name incorrect'})
         // }
+        if(!user){
+            return res.status(401).json({status:'User name incorrect'})
+        }
         // res.status(200).json({ status: 'Login successful',data:user });
     }
     catch(error){
-        res.status(500).json({ error: 'User name incorrect' });
+        res.status(500).json({ status: 'User name incorrect...' });
     }
 
 }
