@@ -1,4 +1,5 @@
 const userModel =  require('../model/userSchema')
+var jwt = require('jsonwebtoken');
 
 //post
 const addUser =  async(req,res) => {
@@ -48,7 +49,10 @@ const userLogin = async(req,res)=>{
             console.log(user);
             console.log(user.password)
             if( await password==user.password){
-                res.status(200).json({ status: 'Login successful',data:user });
+                var token = jwt.sign({ data: user }, 'secret');
+                console.log("token ____", token)
+                let resp = {user , token :token}
+                res.status(200).json({ status: 'Login successful',data:resp });
                   
             }else{
                 return res.status(401).json({status:'Password incorrect'})
