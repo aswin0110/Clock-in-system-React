@@ -11,3 +11,9 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.cardHead{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
