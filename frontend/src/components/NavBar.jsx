@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react'
 import './styles/login.css'
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const NavBar = () => {
     const [modal,setModal] = useState(false);
+    const navigate = useNavigate()
     const [userData,setUserData] = useState({})
     // const [inp,setInp] = useState({email:'',password:''})
     const [email, setEmail] = useState('');
@@ -39,6 +40,8 @@ const NavBar = () => {
             // setFlag(true)
             setIsValidEmail(true)
             setIsValidPassword(true)
+            navigate('/tracker')
+            
           }
           if(res.status===401){
             console.log(res.status)
@@ -111,6 +114,7 @@ const NavBar = () => {
         </AppBar>
         </ThemeProvider>
         
+        
         {modal && (
             // <LoginPage/>
             <div className="modal">
@@ -137,9 +141,10 @@ const NavBar = () => {
             <br /><br />
             <Button variant='text' onClick={loginUser}  color='success' >
               
-              <Link to={'/tracker'} style={{textDecoration:'none',color:'green'}}>
+              {/* <Link to={'/tracker'} style={{textDecoration:'none',color:'green'}}>
                 Login
-              </Link>
+              </Link> */}
+              Login
             </Button>
             
             <Fab color="error" aria-label="add"
