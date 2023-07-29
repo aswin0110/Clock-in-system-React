@@ -25,22 +25,29 @@ const NavBar = () => {
         setModal(!modal);
       };
     const loginUser = async()=>{
-      console.log(email)
-      console.log(password)
+      // console.log(email)
+      // console.log(password)
       await axios.post('http://localhost:3005/login',{email,password})
         .then(async(res)=>{
           if(res.status===200){
+            console.log('user type',res.data.data.userType)
             console.log(res.data.status)
-            // console.log('login successful')
-            console.log(res.data.data)
-            console.log(res.data.data.email)
-            await setUserData(res.data.data)
-            console.log('inside then',userData)
+            console.log('userData---->',res.data.data.user)
+            console.log('type-->',res.data.data.user.userType)
+            // await setUserData(res.data.data)
+            await setUserData(res.data.data.user)
             setModal(!modal);
-            // setFlag(true)
             setIsValidEmail(true)
             setIsValidPassword(true)
-            navigate('/tracker')
+            if(res.data.data.user.userType==='EMPLOYEE'){
+              console.log('inside then',userData)
+              // setFlag(true)  
+              navigate('/tracker')
+            }
+            if(res.data.data.user.userType==='ADMIN'){
+              navigate('/adminHome')
+            }
+            
             
           }
           if(res.status===401){
