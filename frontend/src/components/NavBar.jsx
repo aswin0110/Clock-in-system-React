@@ -14,6 +14,7 @@ const NavBar = () => {
     const [password, setPassword] = useState('');
     const [isValidEmail,setIsValidEmail] = useState(true)
     const [isValidPassword,setIsValidPassword] = useState(true)
+    const [isLoggedIn,setIsLoggedIn] = useState(false)
     // const inputHandler = (e) =>{
     //     const {name,value} = e.target;
     //     setInp((prev)=>({prev,[name]:value}))
@@ -30,10 +31,17 @@ const NavBar = () => {
       await axios.post('http://localhost:3005/login',{email,password})
         .then(async(res)=>{
           if(res.status===200){
-            console.log('user type',res.data.data.userType)
+            console.log('user type',res.data.data.user.userType)
+            console.log('Email--->',res.data.data.user.email)
             console.log(res.data.status)
+            console.log('token----->',res.data.data.token)
+            
+            localStorage.setItem('token', res.data.data.token)
+            localStorage.setItem('email', res.data.data.user.email)
+
             console.log('userData---->',res.data.data.user)
             console.log('type-->',res.data.data.user.userType)
+            setIsLoggedIn(true)
             // await setUserData(res.data.data)
             await setUserData(res.data.data.user)
             setModal(!modal);
@@ -92,6 +100,13 @@ const NavBar = () => {
             },
         },
     })
+    const logout = ()=>{
+      console.log('logout')
+      localStorage.removeItem('token')
+      localStorage.removeItem('email')
+      setIsLoggedIn(false)
+      navigate('/')
+    }
   return (
     <Box sx={{display:'flex',backgroundColor:'#00695f'}}>
         <CssBaseline/>
@@ -105,13 +120,17 @@ const NavBar = () => {
                 </Typography>
                 
                 <Box sx={{marginLeft:'auto'}}>
-                    <Button variant='contained' onClick={toggleModal} >
-                        Login
+                    <Button variant='contained' onClick={toggleModal} disabled={isLoggedIn} >
+                    {isLoggedIn ? "Logged In" : "Login"}
 
                     </Button> &nbsp;
-                    <Button variant='contained'>
-                        Logout
+                    {isLoggedIn && (
+                      <Button variant='contained' onClick={logout}>
+                      Logout
                     </Button>
+
+                    )}
+                    
 
                 </Box>
                 
