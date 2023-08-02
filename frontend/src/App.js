@@ -4,6 +4,7 @@ import './App.css';
 import Home from './components/Home';
 import NavBar from './components/NavBar';
 import TimeTracker from './components/TimeTracker';
+import AdminHome from './components/AdminHome';
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/tracker' element={<TimeTracker/>}/>
+        <Route path='/adminHome' element={<AdminHome/>}/>
       </Routes>
       
     </div>
