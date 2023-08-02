@@ -1,5 +1,5 @@
 import { Autocomplete,Card, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField  } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import './styles/timeTracker.css'
@@ -55,6 +55,8 @@ const TimeTracker = () => {
     console.log(inp);
   }
 
+  const emailId = localStorage.getItem('email')
+
   const readHandler = () =>{
 
     console.log('Button Clicked: '+inp.task);
@@ -73,6 +75,51 @@ const TimeTracker = () => {
 
   }
   
+  const [seconds, setSeconds]= useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [timerActive, setTimerActive] = useState(false);
+
+  const startTimer = () => {
+    setTimerActive(true);
+  };
+
+  var timer;
+  useEffect((timer)=>{
+
+    if(timerActive){
+      timer = setInterval(()=>{
+        setSeconds(seconds+1)
+        if(seconds===59){
+          setMinutes(minutes+1);
+          setSeconds(0);
+        }
+      },1000)
+  
+      return ()=> clearInterval(timer);
+  
+    }
+
+    
+  });
+
+  const restart = () =>{
+
+    setSeconds(0);
+    setMinutes(0);
+    setTimerActive(true);
+    console.log('clicked');
+
+  }
+
+  const stop = () =>{
+    setSeconds(0);
+    setMinutes(0);
+    setTimerActive(false);
+
+    console.log('clicked '+ minutes + ' : ' + seconds);
+  }
+
+
   return (
     <div class='homeMain'>
         <Grid container class='main'>
@@ -95,12 +142,12 @@ const TimeTracker = () => {
             <Card  style={{padding:'25px', paddingLeft:'20px', paddingRight:'20px'}}>
               <card class='cardHead' style={{paddingBottom:'20px'}}>
                 
-                <div style={{display:'flex'}}>Employer Name <AccountCircleIcon/></div>
+                <div style={{display:'flex'}} >{emailId} &nbsp; <AccountCircleIcon/></div>
                 
                 <div style={{paddingLeft:'20px'}}>Date</div>
                 <div style={{paddingLeft:'20px'}}>
                   <Card style={{padding:'5px'}}>
-                  <IconButton color='secondary' size="small"> <TimerIcon /> Timer</IconButton>
+                  <IconButton color='secondary' size="small"> <TimerIcon /> {minutes<10? "0"+minutes: minutes}:{seconds<10? "0"+ seconds: seconds}</IconButton>
                   </Card>
 
                 </div>
@@ -144,7 +191,7 @@ const TimeTracker = () => {
                       </TableCell>
 
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
-                      <Autocomplete id="free-solo-demo" freeSolo name='modeOfWork'  onChange={(enevt, newValue)=>{
+                      <Autocomplete id="free-solo-demo" freeSolo name='modeOfWork'  onChange={(event, newValue)=>{
                         inputHandler({
                           target:{
                             name:'modeOfWork',
@@ -162,8 +209,9 @@ const TimeTracker = () => {
                       <Card style={{padding:'5px'}}>
 
                         <IconButton color='secondary' size="large"> <PlayCircleIcon onClick={readHandler}/> </IconButton>
-                        <IconButton color='secondary' size="large"> <PauseCircleIcon /> </IconButton>
-                        <IconButton color='secondary' size="large"> <StopCircleIcon /> </IconButton>
+                        <IconButton   color='secondary' size="large"> <PauseCircleIcon onClick={startTimer} /> </IconButton>
+                        <IconButton color='secondary' size="large"> <StopCircleIcon onClick={stop} /> </IconButton>
+                        <IconButton color='secondary' size="large"> Restart<StopCircleIcon onClick={restart} /> </IconButton>
                       
                         
                         
