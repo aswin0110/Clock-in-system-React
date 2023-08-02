@@ -1,5 +1,7 @@
-import { Autocomplete,  Card, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField  } from '@mui/material'
-import React from 'react'
+import { Autocomplete,Card, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField  } from '@mui/material'
+import React, { useState } from 'react'
+import axios from 'axios'
+
 import './styles/timeTracker.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import List from '@mui/material/List';
@@ -38,6 +40,38 @@ const TimeTracker = () => {
   //   console.log('working')
   // }
   
+
+  var [inp,setInpu] = useState({
+    employerEmail:localStorage.getItem('email'),
+    project:"",
+    task:"",
+    jobDescription:"",
+    modeOfWork:""
+  })
+
+  const inputHandler = (e)=>{
+    const {name, value}= e.target;
+    setInpu((inp)=>({...inp,[name]:value}));
+    console.log(inp);
+  }
+
+  const readHandler = () =>{
+
+    console.log('Button Clicked: '+inp.task);
+    axios.post('http://localhost:3005/api/addEmployerStatus', inp)
+    .then((res)=>{
+      if(res==='1'){
+      alert('timer started')
+
+      }
+      else{
+        alert('timer not started')
+        
+      }
+    })
+    .catch(err=>console.log(err))
+
+  }
   
   return (
     <div class='homeMain'>
@@ -76,26 +110,50 @@ const TimeTracker = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell align={'left'} style={{ minWidth:'200px' }}>
-                        <Autocomplete id="free-solo-demo" freeSolo 
+                        <Autocomplete id="free-solo-demo" freeSolo name='project' onChange={(event, newValue) => {
+                        inputHandler({
+                          target: {
+                            name: 'project',
+                            value: newValue,
+                          },
+                        });
+                      }}  value={inp.project}
                         options={taskValue.map((option)=>option.title )}
-                        renderInput={(params)=> <TextField {...params} label='Project' /> }>
+                        renderInput={(params)=> <TextField {...params}  label='Project' /> }>
 
                         </Autocomplete>
                       </TableCell>
+
+
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
-                        <Autocomplete id="free-solo-demo" freeSolo 
+                        <Autocomplete id="free-solo-demo" freeSolo name='task'  onChange={(event, newValue)=>{
+                          inputHandler({
+                            target:{
+                              name:'task',
+                              value:newValue,
+                            }
+                          });
+                        }} value = {inp.task}
                         options={projectValues.map((option)=>option.title )}
-                        renderInput={(params)=> <TextField {...params} label='Task' /> }>
+                        renderInput={(params)=> <TextField {...params}  label='Task' /> }>
 
                         </Autocomplete>
                       </TableCell>
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
-                        <TextField id="outlined-basic" label="Job Description" variant="outlined" />
+                        <TextField id="outlined-basic" name='jobDescription' value={inp.jobDescription} onChange={inputHandler} label="Job Description" variant="outlined" />
                       </TableCell>
+
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
-                      <Autocomplete id="free-solo-demo" freeSolo 
+                      <Autocomplete id="free-solo-demo" freeSolo name='modeOfWork'  onChange={(enevt, newValue)=>{
+                        inputHandler({
+                          target:{
+                            name:'modeOfWork',
+                            value:newValue,
+                          }
+                        });
+                      }} value={inp.modeOfWork}
                         options={modeofworkValue.map((option)=>option.title )}
-                        renderInput={(params)=> <TextField {...params} label='Mode of Work' /> }>
+                        renderInput={(params)=> <TextField {...params}  label='Mode of Work' /> }>
 
                         </Autocomplete>
                       </TableCell>
@@ -103,10 +161,10 @@ const TimeTracker = () => {
                       {/* <Button variant="contained" color="success"> Start </Button> */}
                       <Card style={{padding:'5px'}}>
 
-                        <IconButton color='secondary' size="large"> <PlayCircleIcon /> </IconButton>
+                        <IconButton color='secondary' size="large"> <PlayCircleIcon onClick={readHandler}/> </IconButton>
                         <IconButton color='secondary' size="large"> <PauseCircleIcon /> </IconButton>
                         <IconButton color='secondary' size="large"> <StopCircleIcon /> </IconButton>
-
+                      
                         
                         
 
