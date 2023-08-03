@@ -37,6 +37,25 @@ const getUsers = async(req,res) =>{
         res.status(404).json({status:'empty'})
     }
 }
+//get emplyoyees
+const getEmployees = async(req,res) =>{
+    let data;
+    let emp = 'EMPLOYEE'
+    try{
+        data = await userModel.find({userType:emp})
+        console.log(data)
+        if(data){
+            res.status(200).json({status:'success',data:data})
+        }else{
+            res.status(404).json({status:'empty'})
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+
+}
+
 
 //login
 const userLogin = async(req,res)=>{
@@ -75,4 +94,4 @@ const userLogin = async(req,res)=>{
 
 
 //exporting
-module.exports = {addUser,getUsers,userLogin}
+module.exports = {addUser,getUsers,userLogin,getEmployees}

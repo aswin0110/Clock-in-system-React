@@ -13,19 +13,33 @@ const AdminHome = () => {
     const [users,setUsers] = useState([])
     const [showOptions, setShowOptions] = useState(false);
     const [modals,setModals] = useState(false);
+    // const [userDetails,setUserDetails] = useState([])
+    // const [inp,setInp] = useState({email:''})
+    // const [email,setEmail] = useState('')
+    const [project,setProject] = useState([])
     useEffect(()=>{
-        axios.get('http://localhost:3005/users')
+        axios.get('http://localhost:3005/users/employees')
         .then((res)=>{
             // console.log('then-->',res.data.data)
             setUsers(res.data.data)
         })
         .catch((err)=>{console.log(err)})
     },[])
+    //project
+    useEffect(()=>{
+      axios.get('http://localhost:3005/add/viewProject')
+      .then((res)=>{
+        console.log('project status-->',res.status)
+        console.log('project data-->',res.data.data)
+        setProject(res.data.data)
+      })
+      .catch((err)=>{console.log(err)})
+    },[])
     // console.log('data-->',users[0].email)
     const handleFilterClick = () => {
         setShowOptions(!showOptions);
       };
-
+    
     ///----
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -39,7 +53,30 @@ const AdminHome = () => {
     const toggleModals = () => {
         setModals(!modals);
       };
+    
+    const handleOptionChange = (event,value)=>{
+        
+        if(value){
+            const email = value
+            console.log('seleted option-----:',value)
+            console.log('seleted option:',email)
+            
+            axios.post('http://localhost:3005/details/userTimeTracker',{email})
+            .then((res)=>{
+                console.log(res.status)
+                console.log('res-->',res)
+                console.log('data-->',res.data.data)
+                console.log('project-->',res.data.data[0].project)
+                
+            })
+            .catch((err)=>console.log(err))
 
+
+            
+            
+        }
+    }
+    
   return (
     <div className='homeMain'>
         {/* <Grid container className='main' sx={{paddingLeft:'15em'}} >
@@ -87,8 +124,11 @@ const AdminHome = () => {
                         id="combo-box-demo"
                         options={users.map((option)=>option.email)}
                         sx={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Name" />}/>
+                        renderInput={(params) => <TextField {...params} label="Name" />}
+                        onChange={handleOptionChange}/>
+                        
                       </TableCell>
+                      {/* <TableCell><Button variant='contained' onClick={readHandler}>Search</Button></TableCell> */}
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
                       <Fab color="error" aria-label="add"
                         sx={{position: 'absolute',
