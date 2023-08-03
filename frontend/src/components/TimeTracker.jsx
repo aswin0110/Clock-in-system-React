@@ -41,47 +41,17 @@ const TimeTracker = () => {
   // }
   
 
-  var [inp,setInpu] = useState({
-    employerEmail:localStorage.getItem('email'),
-    project:"",
-    task:"",
-    jobDescription:"",
-    modeOfWork:""
-  })
-
-  const inputHandler = (e)=>{
-    const {name, value}= e.target;
-    setInpu((inp)=>({...inp,[name]:value}));
-    console.log(inp);
-  }
-
-  const emailId = localStorage.getItem('email')
-
-  const readHandler = () =>{
-
-    console.log('Button Clicked: '+inp.task);
-    axios.post('http://localhost:3005/api/addEmployerStatus', inp)
-    .then((res)=>{
-      if(res==='1'){
-      alert('timer started')
-
-      }
-      else{
-        alert('timer not started')
-        
-      }
-    })
-    .catch(err=>console.log(err))
-
-  }
+  
   
   const [seconds, setSeconds]= useState(0);
   const [minutes, setMinutes] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
 
-  const startTimer = () => {
-    setTimerActive(true);
-  };
+  // const startTimer = () => {
+  //   setTimerActive(true);
+  // };
+
+  const [valuesinp, setValuesinp] = useState([])
 
   var timer;
   useEffect((timer)=>{
@@ -100,7 +70,67 @@ const TimeTracker = () => {
     }
 
     
+      
+    
+
+    
+
+    
   });
+
+  useEffect(()=>{
+    let emailStorage = localStorage.getItem('email')
+      axios.get(`http://localhost:3005/api/table/${emailStorage}` )
+      .then((res)=>{
+        // console.log(res);
+        if (Array.isArray(res.data.data)) {
+          setValuesinp(res.data.data)
+          
+        } else {
+          console.error('Data is not an array:', res.data.data)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+      })
+  })
+  var [inp,setInpu] = useState({
+    employerEmail:localStorage.getItem('email'),
+    project:"",
+    task:"",
+    jobDescription:"",
+    modeOfWork:"",
+    timerMinutes:minutes,
+    timerSeconds:seconds
+  })
+
+  const inputHandler = (e)=>{
+    const {name, value}= e.target;
+    setInpu((inp)=>({...inp,[name]:value}));
+    console.log(inp);
+  }
+
+  const emailId = localStorage.getItem('email')
+
+  const readHandler = () =>{
+    setTimerActive(true);
+
+    console.log('Button Clicked: '+inp.task);
+    axios.post('http://localhost:3005/api/addEmployerStatus', inp)
+    .then((res)=>{
+      console.log(res);
+      if(res==='1'){
+      alert('timer started')
+        
+      }
+      else{
+        alert('timer not started')
+        
+      }
+    })
+    .catch(err=>console.log(err))
+
+  }
 
   const restart = () =>{
 
@@ -118,6 +148,10 @@ const TimeTracker = () => {
 
     console.log('clicked '+ minutes + ' : ' + seconds);
   }
+
+  // values in table
+
+  
 
 
   return (
@@ -209,7 +243,7 @@ const TimeTracker = () => {
                       <Card style={{padding:'5px'}}>
 
                         <IconButton color='secondary' size="large"> <PlayCircleIcon onClick={readHandler}/> </IconButton>
-                        <IconButton   color='secondary' size="large"> <PauseCircleIcon onClick={startTimer} /> </IconButton>
+                        <IconButton   color='secondary' size="large"> <PauseCircleIcon /> </IconButton>
                         <IconButton color='secondary' size="large"> <StopCircleIcon onClick={stop} /> </IconButton>
                         <IconButton color='secondary' size="large"> Restart<StopCircleIcon onClick={restart} /> </IconButton>
                       
@@ -221,64 +255,19 @@ const TimeTracker = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                  </TableBody>
-                  <TableBody>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
+                    {valuesinp.map((val,i)=>{
+                      return(
+                        <TableRow key={i}>
+                          <TableCell>{val.project}</TableCell>
+                          <TableCell>{val.task}</TableCell>
+                          <TableCell>{val.jobDescription}</TableCell>
+                          <TableCell>{val.modeOfWork}</TableCell>
+                          <TableCell>{val.timerMinutes }: {val.timerSeconds}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+
+
                   </TableBody>
                 </Table>
               </TableContainer>

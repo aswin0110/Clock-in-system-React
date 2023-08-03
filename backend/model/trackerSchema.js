@@ -29,7 +29,16 @@ const trackerSchema = new Schema({
       timestamp: {
         type: Date,
         default: Date.now
+    },
+    timerMinutes:{
+      type: Number,
+      require:true
+    },
+    timerSeconds:{
+      type: Number,
+      require:true
     }
+
 })
 
 

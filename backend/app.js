@@ -38,6 +38,53 @@ app.get('/getapi', async (req,res)=>{
     
 })
 
+
+
+app.delete('/getapi', async (req,res)=>{
+    try {
+        const id = req.body.id
+        const data = await trackerModel.findByIdAndDelete({_id:id})
+        res.json({status:data})
+
+    } catch (error) {
+        res.json({status:error.message})
+        
+    }
+})
+
+app.put('/api/addEmployerStatus', async (req,res)=>{
+    try {
+        const timeData = req.body
+        const timeDataId = req.body._id
+        console.log('ID: '+timeDataId);
+
+        
+        const findData = await trackerModel.findByIdAndUpdate({_id:timeDataId}, req.body)
+        findData.save()
+        res.status(200).json({status:'1'})
+        console.log('updated data: '+ findData);
+        
+    } catch (error) {
+        res.status(404).json({stats:error.message})
+        
+    }
+})
+
+app.get('/api/table/:emailStorage', async (req,res)=>{
+    try {
+        var email = req.params.emailStorage
+        console.log(email);
+        const datas = await trackerModel.find({employerEmail:email})
+        res.json({data:datas})
+        console.log(datas);
+
+    } catch (error) {
+        res.json({status:error.message})
+        
+    }
+    
+})
+
 app.listen(PORT, ()=>{
     console.log(`Server started at PORT: ${PORT}`);
 })
