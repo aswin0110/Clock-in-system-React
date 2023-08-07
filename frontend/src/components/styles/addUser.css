@@ -1,0 +1,22 @@
+.homeMain{
+    height: 100vh;
+    display: flex;
+    justify-content: space-around;
+    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+    font-family: inherit;
+    
+}
+
+.main{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.cardHead{
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+}
+
