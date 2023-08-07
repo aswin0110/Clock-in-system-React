@@ -23,6 +23,26 @@ const UserSchema = new Schema({
         type : String,
         enum : ['ADMIN','EMPLOYEE'],
         required : true
+    },
+    uname : {
+        type : String,
+        required : true
+    },
+    designation : {
+        type :String,
+        required : false
+    },
+    mobileNo : {
+        type : Number,
+        required : false
+    },
+    employeeId : {
+        type : String,
+        required : true,
+        default: function () {
+            // Generate a 6-digit random number
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
     }
 })
 

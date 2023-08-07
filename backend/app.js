@@ -9,8 +9,12 @@ app.use(express.json())
 
 const userControlRouter = require('./routes/userRouter')
 const userLoginRouter = require('./routes/loginRouter')
+const userTimeDetails = require('./routes/trackerData')
+const addProjectRouter = require('./routes/projectTaskRouter')
 app.use('/users',userControlRouter)
 app.use('/login',userLoginRouter)
+app.use('/details',userTimeDetails)
+app.use('/add',addProjectRouter)
 
 PORT = 3005
 
