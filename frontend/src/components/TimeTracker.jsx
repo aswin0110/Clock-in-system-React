@@ -93,7 +93,8 @@ const TimeTracker = () => {
       .catch((error) => {
         console.error('Error fetching data:', error)
       })
-  })
+  },[])
+
   var [inp,setInpu] = useState({
     employerEmail:localStorage.getItem('email'),
     project:"",
@@ -132,14 +133,14 @@ const TimeTracker = () => {
 
   }
 
-  const restart = () =>{
+  // const restart = () =>{
 
-    setSeconds(0);
-    setMinutes(0);
-    setTimerActive(true);
-    console.log('clicked');
+  //   setSeconds(0);
+  //   setMinutes(0);
+  //   setTimerActive(true);
+  //   console.log('clicked');
 
-  }
+  // }
 
   const stop = () =>{
     setSeconds(0);
@@ -156,7 +157,7 @@ const TimeTracker = () => {
 
   return (
     <div class='homeMain'>
-        <Grid container class='main'>
+        <Grid container class='mains'>
             {/* <Typography variant='h1'> Tracker</Typography> */}
 
             {/* <Card>
@@ -243,9 +244,9 @@ const TimeTracker = () => {
                       <Card style={{padding:'5px'}}>
 
                         <IconButton color='secondary' size="large"> <PlayCircleIcon onClick={readHandler}/> </IconButton>
-                        <IconButton   color='secondary' size="large"> <PauseCircleIcon /> </IconButton>
+                        {/* <IconButton   color='secondary' size="large"> <PauseCircleIcon /> </IconButton> */}
                         <IconButton color='secondary' size="large"> <StopCircleIcon onClick={stop} /> </IconButton>
-                        <IconButton color='secondary' size="large"> Restart<StopCircleIcon onClick={restart} /> </IconButton>
+                        {/* <IconButton color='secondary' size="large"> Restart<StopCircleIcon onClick={restart} /> </IconButton> */}
                       
                         
                         

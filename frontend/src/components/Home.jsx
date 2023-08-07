@@ -4,10 +4,11 @@ import './styles/home.css'
 
 const Home = () => {
   return (
-    <div class='homeMain'> 
-        <Grid container spacing={2} class='main'>
-  
-            <Grid item xs={8} style={{textAlign:'initial', paddingLeft:'90px'}} class='left'>
+    <Grid class='homeMain'style={{paddingTop:'90px'}}> 
+        <Grid container
+           spacing={2} class='main' >
+          
+          <Grid item xs={8} style={{textAlign:'initial'}} class='left'>
               <Typography class='lHead' variant='h2'>Your life's work, <br></br> powered by our life's work</Typography>
                 <Typography class='lContent'>A unique and powerful software suite to transform the way you work</Typography>
             </Grid>
@@ -23,8 +24,10 @@ const Home = () => {
                         </ul>
                 
             </Grid>
+  
+            
         </Grid>
-    </div>
+    </Grid>
   )
 }
 

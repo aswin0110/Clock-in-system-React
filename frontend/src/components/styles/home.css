@@ -1,8 +1,10 @@
 .homeMain{
+
+    background-image: url('../asset/4661497_2447626-01.jpg');
+    background-position: center center;
     height: 100vh;
-    display: flex;
     justify-content: space-around;
-    background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%);
+    /* background-image: linear-gradient(to top, #9890e3 0%, #b1f4cf 100%); */
     font-family: inherit;
 }
 

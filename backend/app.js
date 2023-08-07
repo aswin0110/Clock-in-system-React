@@ -21,7 +21,7 @@ app.post('/api/addEmployerStatus', async (req,res)=>{
         var data = new trackerModel(req.body)
         await data.save()
         res.json({status:'1'})
-        console.log(data);
+        // console.log(data);
     } catch (error) {
         res.json({status:error.message})
     }
@@ -35,7 +35,6 @@ app.get('/getapi', async (req,res)=>{
         res.json({status:error.message})
         
     }
-    
 })
 
 
@@ -54,12 +53,12 @@ app.delete('/getapi', async (req,res)=>{
 
 app.put('/api/addEmployerStatus', async (req,res)=>{
     try {
-        const timeData = req.body
-        const timeDataId = req.body._id
-        console.log('ID: '+timeDataId);
+        // const timeData = req.body
+        // const timeDataId = req.body.id
+        console.log('Body: '+req.body);
 
         
-        const findData = await trackerModel.findByIdAndUpdate({_id:timeDataId}, req.body)
+        const findData = await trackerModel.findByIdAndUpdate({_id:req.body._id},{timerMinutes:req.body.timerMinutes , timerSeconds:req.body.timerSeconds})
         findData.save()
         res.status(200).json({status:'1'})
         console.log('updated data: '+ findData);
@@ -76,7 +75,7 @@ app.get('/api/table/:emailStorage', async (req,res)=>{
         console.log(email);
         const datas = await trackerModel.find({employerEmail:email})
         res.json({data:datas})
-        console.log(datas);
+        // console.log(datas);
 
     } catch (error) {
         res.json({status:error.message})

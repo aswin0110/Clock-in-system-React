@@ -50,7 +50,7 @@ const AdminHome = () => {
             
 
         </Grid> */}
-        <Grid container class='main'>
+        <Grid container class='mainA'>
             
             <Card  style={{padding:'25px',height:'30em', paddingLeft:'20px', paddingRight:'20px'}}>
               <card class='cardHead' style={{paddingBottom:'20px'}}>

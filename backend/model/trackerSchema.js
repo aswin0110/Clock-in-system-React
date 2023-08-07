@@ -2,9 +2,6 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-
-
-  
 const trackerSchema = new Schema({
     employerEmail:{
       type: String,
@@ -42,5 +39,5 @@ const trackerSchema = new Schema({
 })
 
 
-const trackerModel = mongoose.model('Tracker_Data', trackerSchema)
+const trackerModel = mongoose.model('tracker_datas', trackerSchema)
 module.exports = trackerModel
