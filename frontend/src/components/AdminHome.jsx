@@ -10,6 +10,32 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 
 
+const DataList = ({ data }) => (
+  // <ul>
+  //   {data.map((item) => (
+  //     <li key={item._id}>
+  //       <p>Date: {new Date(item.timestamp).toLocaleDateString()}</p>
+  //       <p>Project: {item.project}</p>
+  //       <p>Task: {item.task}</p>
+  //       {/* Other fields */}
+  //     </li>
+  //   ))}
+  // </ul>
+  <TableBody>
+                    {data.map((item)=>{
+                      return(
+                        <TableRow>
+                          <TableCell>{item.project}</TableCell>
+                          <TableCell>{item.task}</TableCell>
+                          <TableCell>{item.jobDescription}</TableCell>
+                          <TableCell>{item.modeOfWork}</TableCell>
+                          <TableCell>{item.timerMinutes}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+                    
+                  </TableBody>
+);
 const AdminHome = () => {
     const [users,setUsers] = useState([])
     const [showOptions, setShowOptions] = useState(false);
@@ -22,6 +48,11 @@ const AdminHome = () => {
     // const [email,setEmail] = useState('')
     const [project,setProject] = useState([])
     const [task,setTask] = useState([])
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [filteredData,setFilteredData] = useState([])
+    const [calculatedHours,setCalculatedHours] = useState(0)
+    const [calculatedMinutes,setCalculatedMinute] = useState(0)
     useEffect(()=>{
         axios.get('http://localhost:3005/users/employees')
         .then((res)=>{
@@ -135,6 +166,40 @@ const AdminHome = () => {
             
         }
     }
+
+    const handleFilter  = ()=>{
+      console.log('start date-->',startDate)
+      console.log('end date--->',endDate);
+      setFilteredData(details.filter(item => {
+        const timestamp = new Date(item.timestamp);
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        return timestamp >= start && timestamp <= end;
+      }))
+      // console.log('filtered data-->',filteredData)
+      const totalMinutes = filteredData.reduce(
+        (total, item) => total + item.timerMinutes + item.timerSeconds / 60,
+        0
+      );
+      setCalculatedMinute(totalMinutes)
+      console.log('min-->',calculatedMinutes);
+      // const totalHours = Math.floor(totalMinutes / 60);
+      const totalHours = Math.floor(calculatedMinutes / 60);
+      setCalculatedHours(totalHours)
+      console.log('hours-->',calculatedHours)
+
+    }
+    // const filteredData = details.filter(item => {
+    //   const timestamp = new Date(item.timestamp);
+    //   const start = new Date(startDate);
+    //   const end = new Date(endDate);
+    //   return timestamp >= start && timestamp <= end;
+    // });
+    // const totalMinutes = filteredData.reduce(
+    //   (total, item) => total + item.timerMinutes + item.timerSeconds / 60,
+    //   0
+    // );
+    // const totalHours = Math.floor(totalMinutes / 60);
     
   return (
     <div className='homeMain'>
@@ -193,7 +258,7 @@ const AdminHome = () => {
                       </TableCell>
                       {/* <TableCell><Button variant='contained' onClick={readHandler}>Search</Button></TableCell> */}
                       <TableCell align={'right'} style={{ minWidth:'200px' }}>
-                      <Fab color="error" aria-label="add"
+                      {/* <Fab color="error" aria-label="add"
                         sx={{position: 'absolute',
                         top: '10px',
                         right: '10px',
@@ -202,9 +267,9 @@ const AdminHome = () => {
                         >
                             <FilterAltIcon />
 
-                        </Fab>
+                        </Fab> */}
 
-                        <Menu
+                        {/* <Menu
                         id="demo-positioned-menu"
                         aria-labelledby="demo-positioned-button"
                         anchorEl={anchorEl}
@@ -223,7 +288,7 @@ const AdminHome = () => {
                             <MenuItem onClick={handleClose}>Weekly</MenuItem>
                             <MenuItem onClick={handleClose}>Monthly</MenuItem>
                             <MenuItem onClick={handleClose}>Yearly</MenuItem>
-                        </Menu>
+                        </Menu> */}
                         
                         
                         {/* <Button variant='contained' onClick={handleFilterClick} color='success'>
@@ -238,9 +303,13 @@ const AdminHome = () => {
                                 <Button>Yearly</Button>
                             </div>
                         )} */}
-
+                        <label>Start Date: </label>
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                       </TableCell>
                       <TableCell align={'right'} style={{ minWidth:'20px' }}>
+                      <label>End Date: </label>
+                      <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                      {/* <button onClick={handleFilter}>Filter Data</button> */}
                       {/* <Button variant="contained" color="success"> Start </Button> */}
                       {/* <Card style={{padding:'5px'}}>
 
@@ -253,9 +322,16 @@ const AdminHome = () => {
 
                       </Card> */}
                       </TableCell>
+                      <TableCell>
+                      {/* <button onClick={handleFilter}>Filter Data</button> */}
+                      <Button variant='outlined' onClick={handleFilter} color='error'>Filter Data</Button>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  {/* <DataList data={filteredData} />
+                  <p>Total Hours: {totalHours} hours</p> */}
+
+                  {/* <TableBody>
                     {details.map((val,index)=>{
                       return(
                         <TableRow>
@@ -267,15 +343,28 @@ const AdminHome = () => {
                         </TableRow>
                       )
                     })}
-                    {/* <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell>
-                    <TableCell>value</TableCell> */}
+                    
+                  </TableBody> */}
+
+                  <TableBody>
+                    {filteredData.map((item)=>{
+                      return(
+                        <TableRow>
+                          <TableCell>{item.project}</TableCell>
+                          <TableCell>{item.task}</TableCell>
+                          <TableCell>{item.jobDescription}</TableCell>
+                          <TableCell>{item.modeOfWork}</TableCell>
+                          <TableCell>{item.timerMinutes}</TableCell>
+                        </TableRow>
+                      )
+                    })}
+                    
                   </TableBody>
+                <p>Total Hours: {calculatedHours} hours</p> 
 
                 </Table>
               </TableContainer>
-              
+              <Button variant='contained'>{calculatedHours}</Button>
             </Card>
             
         </Grid>
