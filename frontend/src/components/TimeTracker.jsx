@@ -11,7 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 // import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
 // import WorkHistoryOutlinedIcon from '@mui/icons-material/WorkHistoryOutlined';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import PauseCircleIcon from '@mui/icons-material/PauseCircle';
+// import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import TimerIcon from '@mui/icons-material/Timer';
 
@@ -52,6 +52,7 @@ const TimeTracker = () => {
   // };
 
   const [valuesinp, setValuesinp] = useState([])
+  
 
   var timer;
   useEffect((timer)=>{
@@ -78,22 +79,23 @@ const TimeTracker = () => {
     
   });
 
+  const [reload, setReload] = useState(false)
   useEffect(()=>{
+
     let emailStorage = localStorage.getItem('email')
       axios.get(`http://localhost:3005/api/table/${emailStorage}` )
       .then((res)=>{
-        // console.log(res);
-        if (Array.isArray(res.data.data)) {
+        console.log('test below');
+        console.log(res.data.data[res.data.data.length - 1]._id);
+        
           setValuesinp(res.data.data)
           
-        } else {
-          console.error('Data is not an array:', res.data.data)
-        }
+        
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
       })
-  },[])
+  },[reload])
 
   var [inp,setInpu] = useState({
     employerEmail:localStorage.getItem('email'),
@@ -108,24 +110,32 @@ const TimeTracker = () => {
   const inputHandler = (e)=>{
     const {name, value}= e.target;
     setInpu((inp)=>({...inp,[name]:value}));
-    console.log(inp);
+    // console.log(inp);
   }
 
   const emailId = localStorage.getItem('email')
+  const [lastId, setLastId] = useState([])
 
   const readHandler = () =>{
     setTimerActive(true);
 
-    console.log('Button Clicked: '+inp.task);
+    console.log(inp);
+    
+
     axios.post('http://localhost:3005/api/addEmployerStatus', inp)
     .then((res)=>{
       console.log(res);
-      if(res==='1'){
-      alert('timer started')
+      if(res.data.status==='1'){
+      alert(res.data.message)
+      setLastId(res.data.lData._id);
+      console.log("id:   " +lastId);
+      // const lastID = res.data.lData._id
+      
+      setReload(prevState => !prevState);
         
       }
-      else{
-        alert('timer not started')
+      else if(res.data.status=== '2'){
+        alert(res.data.message)
         
       }
     })
@@ -141,13 +151,31 @@ const TimeTracker = () => {
   //   console.log('clicked');
 
   // }
+  // const [dataList, setDataList] = useState([]);
 
   const stop = () =>{
-    setSeconds(0);
-    setMinutes(0);
-    setTimerActive(false);
+    
+    console.log('last SDAJKHBFVCSDB '+lastId);
+    
+      const newObj = {
+        _id: lastId,
+        timerMinutes: minutes,
+        timerSeconds: seconds
+      };
+// console.log(newObj);
 
     console.log('clicked '+ minutes + ' : ' + seconds);
+    // console.log(lastID);
+    axios.put(`http://localhost:3005/api/addEmployerStatus`,newObj)
+    .then((res)=>{
+      console.log(res);
+      setSeconds(0);
+      setMinutes(0);
+      setTimerActive(false);
+      setReload(prevState => !prevState);
+
+
+    })
   }
 
   // values in table
@@ -156,8 +184,8 @@ const TimeTracker = () => {
 
 
   return (
-    <div class='homeMain'>
-        <Grid container class='mains'>
+    <div className='homeMain'>
+        <Grid container className='mains'>
             {/* <Typography variant='h1'> Tracker</Typography> */}
 
             {/* <Card>
@@ -175,7 +203,7 @@ const TimeTracker = () => {
             </List>
             </Card> */}
             <Card  style={{padding:'25px', paddingLeft:'20px', paddingRight:'20px'}}>
-              <card class='cardHead' style={{paddingBottom:'20px'}}>
+              <Card className='cardHead' style={{paddingBottom:'20px'}}>
                 
                 <div style={{display:'flex'}} >{emailId} &nbsp; <AccountCircleIcon/></div>
                 
@@ -186,7 +214,7 @@ const TimeTracker = () => {
                   </Card>
 
                 </div>
-              </card> 
+              </Card> 
               <TableContainer sx={{ maxHeight: 350 }}>
                 <Table  stickyHeader aria-label="sticky table">
                   <TableHead>
@@ -243,9 +271,9 @@ const TimeTracker = () => {
                       {/* <Button variant="contained" color="success"> Start </Button> */}
                       <Card style={{padding:'5px'}}>
 
-                        <IconButton color='secondary' size="large"> <PlayCircleIcon onClick={readHandler}/> </IconButton>
+                        <IconButton color='secondary' size="large" onClick={readHandler}> <PlayCircleIcon /> </IconButton>
                         {/* <IconButton   color='secondary' size="large"> <PauseCircleIcon /> </IconButton> */}
-                        <IconButton color='secondary' size="large"> <StopCircleIcon onClick={stop} /> </IconButton>
+                        <IconButton color='secondary' size="large" onClick={stop} > <StopCircleIcon /> </IconButton>
                         {/* <IconButton color='secondary' size="large"> Restart<StopCircleIcon onClick={restart} /> </IconButton> */}
                       
                         
@@ -259,6 +287,7 @@ const TimeTracker = () => {
                     {valuesinp.map((val,i)=>{
                       return(
                         <TableRow key={i}>
+                          <TableCell>{val._id}</TableCell>
                           <TableCell>{val.project}</TableCell>
                           <TableCell>{val.task}</TableCell>
                           <TableCell>{val.jobDescription}</TableCell>
@@ -267,14 +296,11 @@ const TimeTracker = () => {
                         </TableRow>
                       )
                     })}
-
-
+                    
                   </TableBody>
                 </Table>
               </TableContainer>
-              
             </Card>
-            
         </Grid>
     </div>
   )

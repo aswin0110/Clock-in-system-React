@@ -24,10 +24,13 @@ app.post('/api/addEmployerStatus', async (req,res)=>{
     try {
         var data = new trackerModel(req.body)
         await data.save()
-        res.json({status:'1'})
+        res.json({status:'1', message: ' added one data and timer started', lData:data})
+        console.log(data);
         // console.log(data);
     } catch (error) {
         res.json({status:error.message})
+        res.json({status:'2' , message: 'please try again or reload'})
+
     }
 })
 
@@ -59,7 +62,7 @@ app.put('/api/addEmployerStatus', async (req,res)=>{
     try {
         // const timeData = req.body
         // const timeDataId = req.body.id
-        console.log('Body: '+req.body);
+        console.log(req.body.timerSeconds);
 
         
         const findData = await trackerModel.findByIdAndUpdate({_id:req.body._id},{timerMinutes:req.body.timerMinutes , timerSeconds:req.body.timerSeconds})
