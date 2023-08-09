@@ -82,6 +82,12 @@ const AdminHome = () => {
       })
       .catch((err)=>{console.log(err)})
     },[])
+    ///////////////////total time
+    useEffect(() => {
+      // Calculate total hours when calculatedMinutes changes
+      const totalHours = Math.floor(calculatedMinutes / 60);
+      setCalculatedHours(totalHours);
+  }, [calculatedMinutes]);
     /////////////////////////////////////////add task and project
     const inputProjectHandler = (e)=>{
       setInpProject(e.target.value)
@@ -152,11 +158,12 @@ const AdminHome = () => {
             
             axios.post('http://localhost:3005/details/userTimeTracker',{email})
             .then((res)=>{
-                console.log(res.status)
+                console.log('status--> ',res.status)
                 console.log('res-->',res)
                 console.log('data-->',res.data.data)
-                console.log('project-->',res.data.data[0].project)
+                // console.log('project-->',res.data.data[0].project)
                 setDetails(res.data.data)
+                
                 
             })
             .catch((err)=>console.log(err))
@@ -184,9 +191,10 @@ const AdminHome = () => {
       setCalculatedMinute(totalMinutes)
       console.log('min-->',calculatedMinutes);
       // const totalHours = Math.floor(totalMinutes / 60);
-      const totalHours = Math.floor(calculatedMinutes / 60);
-      setCalculatedHours(totalHours)
-      console.log('hours-->',calculatedHours)
+      // const totalHours = Math.floor(calculatedMinutes / 60);
+      // setCalculatedHours(totalHours)
+      // setCalculatedHours(totalMinutes)
+      // console.log('hours-->',calculatedHours)
 
     }
     // const filteredData = details.filter(item => {
@@ -364,7 +372,7 @@ const AdminHome = () => {
 
                 </Table>
               </TableContainer>
-              <Button variant='contained'>{calculatedHours}</Button>
+              <Button variant='contained' color='success'>{calculatedHours} Hrs</Button>
             </Card>
             
         </Grid>
