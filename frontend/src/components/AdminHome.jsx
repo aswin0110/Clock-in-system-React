@@ -53,6 +53,7 @@ const AdminHome = () => {
     const [filteredData,setFilteredData] = useState([])
     const [calculatedHours,setCalculatedHours] = useState(0)
     const [calculatedMinutes,setCalculatedMinute] = useState(0)
+    const [reminutes,setReminutes] = useState(0)
     useEffect(()=>{
         axios.get('http://localhost:3005/users/employees')
         .then((res)=>{
@@ -86,7 +87,9 @@ const AdminHome = () => {
     useEffect(() => {
       // Calculate total hours when calculatedMinutes changes
       const totalHours = Math.floor(calculatedMinutes / 60);
+      const remainingMinutes = Math.floor(calculatedMinutes % 60) ;
       setCalculatedHours(totalHours);
+      setReminutes(remainingMinutes)
   }, [calculatedMinutes]);
     /////////////////////////////////////////add task and project
     const inputProjectHandler = (e)=>{
@@ -362,17 +365,17 @@ const AdminHome = () => {
                           <TableCell>{item.task}</TableCell>
                           <TableCell>{item.jobDescription}</TableCell>
                           <TableCell>{item.modeOfWork}</TableCell>
-                          <TableCell>{item.timerMinutes}</TableCell>
+                          <TableCell>{item.timerMinutes} mins</TableCell>
                         </TableRow>
                       )
                     })}
                     
                   </TableBody>
-                <p>Total Hours: {calculatedHours} hours</p> 
+                <p>Total Hours: {calculatedHours} hours {reminutes} minutes</p> 
 
                 </Table>
               </TableContainer>
-              <Button variant='contained' color='success'>{calculatedHours} Hrs</Button>
+              <Button variant='contained' color='success'>{calculatedHours} Hrs {reminutes} Mins</Button>
             </Card>
             
         </Grid>
