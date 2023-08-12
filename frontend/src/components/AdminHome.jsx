@@ -365,7 +365,7 @@ const AdminHome = () => {
                           <TableCell>{item.task}</TableCell>
                           <TableCell>{item.jobDescription}</TableCell>
                           <TableCell>{item.modeOfWork}</TableCell>
-                          <TableCell>{item.timerMinutes} mins</TableCell>
+                          <TableCell>{item.timerMinutes} : {item.timerSeconds}</TableCell>
                         </TableRow>
                       )
                     })}
