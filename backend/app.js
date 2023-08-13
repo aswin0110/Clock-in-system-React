@@ -1,6 +1,8 @@
 const express =  require('express')
 const cors = require('cors')
 const app = express()
+const path = require('path');
+
 
 app.use(cors())
 
@@ -91,7 +93,6 @@ app.get('/api/table/:emailStorage', async (req,res)=>{
     
 })
 
-const path = require('path');
 app.use(express.static(path.join(__dirname,'/build'))); 
 
 app.get('/*', function(req, res) { 
