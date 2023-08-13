@@ -84,7 +84,7 @@ const TimeTracker = () => {
   useEffect(()=>{
 
     let emailStorage = localStorage.getItem('email')
-      axios.get(`http://localhost:3005/api/table/${emailStorage}` )
+      axios.get(`/api/table/${emailStorage}` )
       .then((res)=>{
         console.log('test below');
         console.log(res.data.data[res.data.data.length - 1]._id);
@@ -123,7 +123,7 @@ const TimeTracker = () => {
     console.log(inp);
     
 
-    axios.post('http://localhost:3005/api/addEmployerStatus', inp)
+    axios.post('/api/addEmployerStatus', inp)
     .then((res)=>{
       console.log(res);
       if(res.data.status==='1'){
@@ -167,7 +167,7 @@ const TimeTracker = () => {
 
     console.log('clicked '+ minutes + ' : ' + seconds);
     // console.log(lastID);
-    axios.put(`http://localhost:3005/api/addEmployerStatus`,newObj)
+    axios.put(`/api/addEmployerStatus`,newObj)
     .then((res)=>{
       console.log(res);
       setSeconds(0);

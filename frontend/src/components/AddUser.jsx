@@ -18,7 +18,7 @@ const AddUser = (props) => {
         console.log('add clicked')
         console.log(inp)
         if(props.method == 'post'){
-            axios.post('http://localhost:3005/users/addEmployee',inp)
+            axios.post('/api/users/addEmployee',inp)
             .then((res)=>{
                 if(res.status === 201){
                 alert('Employee successully added')
@@ -29,7 +29,7 @@ const AddUser = (props) => {
             .catch((err)=>{console.log(err)})
         }
         if(props.method == 'put'){
-            axios.put('http://localhost:3005/users/updateEmployee/'+inp._id,inp)
+            axios.put('/api/users/updateEmployee/'+inp._id,inp)
             .then(()=>{
                 alert("Updated")
                 window.location.reload(false)

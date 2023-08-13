@@ -14,7 +14,7 @@ const ViewUsers = () => {
     const [update,setUpdate] = useState(false)
     useEffect(()=>{
         
-        axios.get('http://localhost:3005/users/employees')
+        axios.get('/api/users/employees')
         .then((res)=>{
             // console.log('then-->',res.data.data)
             setUsers(res.data.data)
@@ -26,7 +26,7 @@ const ViewUsers = () => {
         console.log('id-->',id);
         // console.log('email-->',email);
         // axios.delete('http://localhost:3005/users/deleteEmployee',email)
-        axios.delete('http://localhost:3005/users/deleteEmployee/'+id)
+        axios.delete('/api/users/deleteEmployee/'+id)
         .then(()=>{
             alert("Deleted")
             window.location.reload(false)

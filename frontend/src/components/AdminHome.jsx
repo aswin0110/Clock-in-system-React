@@ -55,7 +55,7 @@ const AdminHome = () => {
     const [calculatedMinutes,setCalculatedMinute] = useState(0)
     const [reminutes,setReminutes] = useState(0)
     useEffect(()=>{
-        axios.get('http://localhost:3005/users/employees')
+        axios.get('/api/users/employees')
         .then((res)=>{
             // console.log('then-->',res.data.data)
             setUsers(res.data.data)
@@ -64,7 +64,7 @@ const AdminHome = () => {
     },[])
     //project
     useEffect(()=>{
-      axios.get('http://localhost:3005/add/viewProject')
+      axios.get('/api/add/viewProject')
       .then((res)=>{
         console.log('project status-->',res.status)
         console.log('project data-->',res.data.data)
@@ -74,7 +74,7 @@ const AdminHome = () => {
     },[])
     //task
     useEffect(()=>{
-      axios.get('http://localhost:3005/add/task')
+      axios.get('/api/add/task')
       .then((res)=>{
         console.log('task status-->',res.status)
         console.log('task data-->',res.data.data)
@@ -100,7 +100,7 @@ const AdminHome = () => {
       console.log(inpProject)
       var projectEnty = {project :inpProject}
       console.log('project entry--->',projectEnty);
-      axios.post('http://localhost:3005/add/project',projectEnty)
+      axios.post('/api/add/project',projectEnty)
       .then((res)=>{
         console.log(res.status);
         if(res.status==200)
@@ -121,7 +121,7 @@ const AdminHome = () => {
       console.log(inpTask)
       var taskEnty = {task :inpTask}
       console.log('project entry--->',taskEnty);
-      axios.post('http://localhost:3005/add/task',taskEnty)
+      axios.post('/api/add/task',taskEnty)
       .then((res)=>{
         console.log(res.status);
         if(res.status==200)
@@ -159,7 +159,7 @@ const AdminHome = () => {
             console.log('seleted option-----:',value)
             console.log('seleted option:',email)
             
-            axios.post('http://localhost:3005/details/userTimeTracker',{email})
+            axios.post('/api/details/userTimeTracker',{email})
             .then((res)=>{
                 console.log('status--> ',res.status)
                 console.log('res-->',res)

@@ -28,7 +28,7 @@ const NavBar = () => {
     const loginUser = async()=>{
       // console.log(email)
       // console.log(password)
-      await axios.post('http://localhost:3005/login',{email,password})
+      await axios.post('/api/login',{email,password})
         .then(async(res)=>{
           if(res.status===200){
             console.log('user type',res.data.data.user.userType)

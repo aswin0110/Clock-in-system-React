@@ -11,10 +11,10 @@ const userControlRouter = require('./routes/userRouter')
 const userLoginRouter = require('./routes/loginRouter')
 const userTimeDetails = require('./routes/trackerData')
 const addProjectRouter = require('./routes/projectTaskRouter')
-app.use('/users',userControlRouter)
-app.use('/login',userLoginRouter)
-app.use('/details',userTimeDetails)
-app.use('/add',addProjectRouter)
+app.use('/api/users',userControlRouter)
+app.use('/api/login',userLoginRouter)
+app.use('/api/details',userTimeDetails)
+app.use('/api/add',addProjectRouter)
 
 PORT = 3005
 
@@ -90,6 +90,14 @@ app.get('/api/table/:emailStorage', async (req,res)=>{
     }
     
 })
+
+const path = require('path');
+app.use(express.static(path.join(__dirname,'/build'))); 
+
+app.get('/*', function(req, res) { 
+res.sendFile(path.join(__dirname ,'/build/index.html')); }); 
+
+
 
 app.listen(PORT, ()=>{
     console.log(`Server started at PORT: ${PORT}`);
