@@ -9,6 +9,8 @@ app.use(cors())
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
+app.use(express.static(path.join(__dirname,'/build')));
+
 const userControlRouter = require('./routes/userRouter')
 const userLoginRouter = require('./routes/loginRouter')
 const userTimeDetails = require('./routes/trackerData')
@@ -93,7 +95,6 @@ app.get('/api/table/:emailStorage', async (req,res)=>{
     
 })
 
-app.use(express.static(path.join(__dirname,'/build'))); 
 
 app.get('/*', function(req, res) { 
 res.sendFile(path.join(__dirname ,'/build/index.html')); }); 
